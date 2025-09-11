@@ -5,7 +5,7 @@ public class PlayerControl : MonoBehaviour
     private float currentSpeed;
     private float sprintSpeed = 10.0f;
     private float speed = 5.0f;
-    private float jumpForce = 5.0f;
+    private float jumpForce = 7.0f;
     private float moveInput;
 
     private bool isGrounded;
