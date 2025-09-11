@@ -50,7 +50,7 @@ public class PlayerControl : MonoBehaviour
     {
         moveInput = Input.GetAxisRaw("Horizontal");
         isSprinting = Input.GetKey(KeyCode.LeftShift);
-                if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             isJumping = true;
         }
