@@ -9,6 +9,8 @@ public class PlayerControl : MonoBehaviour
     private float moveInput;
 
     private bool isGrounded;
+    private bool isJumping;
+    private bool isSprinting;
 
     private Rigidbody2D rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -20,28 +22,12 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        HandleInput();
     }
 
     void FixedUpdate()
     {
-        moveInput = Input.GetAxisRaw("Horizontal");
-        rb.linearVelocity = new Vector2(moveInput * currentSpeed, rb.linearVelocity.y);
-
-        if(Input.GetKey(KeyCode.LeftShift))
-        {
-            currentSpeed = sprintSpeed;
-        }
-        else
-        {
-            currentSpeed = speed;
-        }
-
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            isGrounded = false;
-        }
+        ApplyMovement();
     }
 
     void OnCollisionEnter2D(Collision2D collsion)
@@ -50,5 +36,34 @@ public class PlayerControl : MonoBehaviour
         {
             isGrounded = true;
         }
+    }
+
+    void OnCollisionExit2D(Collision2D collsion)
+    {
+        if(collsion.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+        }
+    }
+
+    void HandleInput()
+    {
+        moveInput = Input.GetAxisRaw("Horizontal");
+        isSprinting = Input.GetKey(KeyCode.LeftShift);
+                if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            isJumping = true;
+        }
+    }
+
+    void ApplyMovement()
+    {
+        rb.linearVelocity = new Vector2(moveInput * currentSpeed, rb.linearVelocity.y);
+        if (isJumping)
+        {
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            isJumping = false;
+        }
+        currentSpeed = (isSprinting) ? sprintSpeed : speed;
     }
 }
