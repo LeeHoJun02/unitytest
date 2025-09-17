@@ -43,8 +43,8 @@ public class PlayerControl : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        sprite = rb.GetComponent<SpriteRenderer>();
-        anim = rb.GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -64,6 +64,7 @@ public class PlayerControl : MonoBehaviour
         if (collsion.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+            
         }
     }
 
@@ -85,11 +86,13 @@ public class PlayerControl : MonoBehaviour
             {
                 currentState = PlayerState.Jumping;
                 Debug.Log("Jumping");
+                anim.SetTrigger("jump");
             }
             else if (vy < -0.1f)
             {
                 currentState = PlayerState.Falling;
                 Debug.Log("Falling");
+                anim.SetTrigger("fall");
             }
             else currentState = PlayerState.Jumping;
         }
@@ -99,20 +102,23 @@ public class PlayerControl : MonoBehaviour
             {
                 currentState = PlayerState.Running;
                 Debug.Log("Running");
-                anim.SetBool("Run", true);
+                anim.SetBool("run", true);
+                anim.SetBool("move", false);
             }
             else if (Mathf.Abs(moveInput) > 0.01f)
             {
                 currentState = PlayerState.Walking;
                 Debug.Log("Walking");
                 anim.SetBool("move", true);
+                anim.SetBool("run", false); 
             }
-
             else
             {
                 currentState = PlayerState.Idle;
                 Debug.Log("Idle");
-                anim.SetBool("Stop", true);
+                anim.SetBool("move", false);  
+                anim.SetBool("run", false);
+
 
             }
 
