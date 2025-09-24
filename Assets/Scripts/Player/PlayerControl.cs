@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+
 public class PlayerControl : MonoBehaviour
 {
     enum PlayerState
@@ -14,6 +15,8 @@ public class PlayerControl : MonoBehaviour
         UsingAbility1,
         UsingAbility2
     }
+
+    MissileLauncher launcher;
 
     private float currentHealth = 100.0f;
     private float maxHealth = 100.0f;
@@ -42,6 +45,8 @@ public class PlayerControl : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (launcher == null) launcher = GetComponent<MissileLauncher>();
+
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -64,7 +69,7 @@ public class PlayerControl : MonoBehaviour
         if (collsion.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
-            
+
         }
     }
 
@@ -110,13 +115,12 @@ public class PlayerControl : MonoBehaviour
                 currentState = PlayerState.Walking;
                 Debug.Log("Walking");
                 anim.SetBool("move", true);
-                anim.SetBool("run", false); 
+                anim.SetBool("run", false);
             }
             else
             {
                 currentState = PlayerState.Idle;
-                Debug.Log("Idle");
-                anim.SetBool("move", false);  
+                anim.SetBool("move", false);
                 anim.SetBool("run", false);
 
 
@@ -169,6 +173,12 @@ public class PlayerControl : MonoBehaviour
     void HandleAttackInput()
     {
         isAttacking = Input.GetMouseButtonDown(0);
+        if (isAttacking)
+        {
+            Debug.Log("Attack");
+            anim.SetTrigger("attack");
+        }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("Use Ability2");
@@ -176,6 +186,10 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("Use Ability1");
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            launcher.Fire();
         }
     }
     void ApplyMovement()
@@ -196,7 +210,6 @@ public class PlayerControl : MonoBehaviour
             currentSpeed = speed;
         }
     }
-
 
     //gpt
     private void OnGUI()
