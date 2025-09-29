@@ -16,7 +16,6 @@ public class PlayerControl : MonoBehaviour
         UsingAbility2
     }
 
-    MissileLauncher launcher;
 
     private float currentHealth = 100.0f;
     private float maxHealth = 100.0f;
@@ -45,8 +44,6 @@ public class PlayerControl : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (launcher == null) launcher = GetComponent<MissileLauncher>();
-
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -189,7 +186,6 @@ public class PlayerControl : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            launcher.Fire();
         }
     }
     void ApplyMovement()

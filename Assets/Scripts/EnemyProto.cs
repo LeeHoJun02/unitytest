@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyMove : MonoBehaviour
+public class EnemyProto : MonoBehaviour
 {
     private float moveSpeed = 3.0f;
     private float patrolRange = 2.0f;
